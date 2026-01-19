@@ -32,7 +32,7 @@ interface GenerateRequest {
 }
 
 interface GenerateResponse {
-  content: string;
+  outputs: string[];
 }
 
 const App: React.FC = () => {
@@ -57,8 +57,9 @@ const App: React.FC = () => {
   const [tone, setTone] = useState<'SARCASTIC' | 'PROFESSIONAL' | 'CHAOTIC' | 'INSPIRATIONAL' | 'AGGRESSIVE' | 'FUNNY' | 'DARK_HUMOR' | 'NEUTRAL'>('SARCASTIC');
   const [platform, setPlatform] = useState<'TWITTER' | 'LINKEDIN' | 'INSTAGRAM' | 'THREADS' | 'REDDIT'>('TWITTER');
   const [chaos, setChaos] = useState<number>(50);
-  const [generatedContent, setGeneratedContent] = useState<string>('');
+  const [generatedOutputs, setGeneratedOutputs] = useState<string[]>([]);
   const [generating, setGenerating] = useState<boolean>(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   // Check for existing token on component mount
   useEffect(() => {
@@ -160,7 +161,7 @@ const App: React.FC = () => {
     setUser(null);
     setToken('');
     localStorage.removeItem('authToken');
-    setGeneratedContent('');
+    setGeneratedOutputs([]);
     setInput('');
   };
 
@@ -191,7 +192,7 @@ const App: React.FC = () => {
 
       if (response.ok) {
         const generateResponse: GenerateResponse = await response.json();
-        setGeneratedContent(generateResponse.content);
+        setGeneratedOutputs(generateResponse.outputs);
       } else if (response.status === 401) {
         setError('Authentication expired. Please login again.');
         handleLogout();
@@ -429,11 +430,38 @@ const App: React.FC = () => {
                 </button>
               </form>
 
-              {generatedContent && (
+              {generatedOutputs.length > 0 && (
                 <div className="generated-content">
                   <h3 className="content-title">Generated Content</h3>
-                  <div className="content-box">
-                    <pre>{generatedContent}</pre>
+                  <div className="outputs-grid">
+                    {generatedOutputs.slice(1).map((output, index) => {
+                      const originalIndex = index + 1;
+                      return (
+                        <div key={originalIndex} className="output-card">
+                          <div className="output-header">
+                            <span className="output-number">Variation {index + 1}</span>
+                            <button
+                              className={`copy-button ${copiedIndex === originalIndex ? 'copied' : ''}`}
+                              onClick={async () => {
+                                try {
+                                  await navigator.clipboard.writeText(output);
+                                  setCopiedIndex(originalIndex);
+                                  setTimeout(() => setCopiedIndex(null), 2000);
+                                } catch (err) {
+                                  console.error('Failed to copy text: ', err);
+                                }
+                              }}
+                              title={copiedIndex === originalIndex ? 'Copied!' : 'Copy to clipboard'}
+                            >
+                              {copiedIndex === originalIndex ? '✅' : '📋'}
+                            </button>
+                          </div>
+                          <div className="output-content">
+                            <pre>{output}</pre>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
