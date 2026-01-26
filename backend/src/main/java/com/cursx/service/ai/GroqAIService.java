@@ -19,6 +19,9 @@ public class GroqAIService implements AIService {
     @Value("${groq.api.url:https://api.groq.com/openai/v1/chat/completions}")
     private String apiUrl;
 
+    @Value("${groq.model:llama-3.1-8b-instant}")
+    private String model;
+
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
@@ -34,8 +37,7 @@ public class GroqAIService implements AIService {
             headers.setBearerAuth(apiKey);
 
             Map<String, Object> requestBody = Map.of(
-                // "model", "llama3-70b-8192", // Current free model from Groq
-                "model", "llama-3.1-8b-instant", // Current free model from Groq
+                "model", model,
                 "messages", List.of(Map.of(
                     "role", "user",
                     "content", prompt
