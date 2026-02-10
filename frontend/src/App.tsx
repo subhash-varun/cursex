@@ -174,20 +174,22 @@ const App: React.FC = () => {
     setError('');
 
     try {
+      const generateRequest: GenerateRequest = {
+        input,
+        mode,
+        format,
+        tone,
+        platform,
+        chaos,
+      };
+
       const response = await fetch('http://localhost:8080/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          input,
-          mode,
-          format,
-          tone,
-          platform,
-          chaos,
-        }),
+        body: JSON.stringify(generateRequest),
       });
 
       if (response.ok) {
