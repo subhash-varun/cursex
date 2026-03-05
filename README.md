@@ -351,12 +351,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **React** for the excellent frontend library
 - **Open source community** for amazing tools and libraries
 
-## 📞 Support
-
-For support, email support@cursx.com or join our Discord community.
-
----
-
-**Made with ❤️ by the CurseX Team**
-
 *Transform your ideas into viral content with AI-powered creativity!* 🚀
