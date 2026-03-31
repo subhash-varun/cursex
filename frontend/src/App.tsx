@@ -94,7 +94,7 @@ const App: React.FC = () => {
     setError('');
 
     try {
-      const response = await fetch('https://satisfied-strength-production.up.railway.app/api/auth/login', {
+      const response = await fetch('https://cursx-backend.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
