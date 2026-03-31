@@ -126,7 +126,7 @@ const App: React.FC = () => {
     setError('');
 
     try {
-      const response = await fetch('https://satisfied-strength-production.up.railway.app/api/auth/register', {
+      const response = await fetch('https://cursx-backend.onrender.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ const App: React.FC = () => {
         chaos,
       };
 
-      const response = await fetch('https://satisfied-strength-production.up.railway.app/api/generate', {
+      const response = await fetch('https://cursx-backend.onrender.com/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
